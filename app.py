@@ -24,6 +24,18 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///wwii_flights"
 
 db = SQLAlchemy(app)
 
+# Create our database model
+# class Missions(db.Model):
+#     __tablename__ = 'Flights'
+
+#     id = db.Column(db.Integer, primary_key=True)
+#     LONGITUDE = db.Column(db.String)
+#     LATITUDE = db.Column(db.String)
+#     MSNDATE = db.Column(db.String)
+#     YEAR = db.Column(db.Integer)
+#     AIRCRAFT_NAME = db.Column(db.String)
+
+
 #Reflect an existing database into a new model
 Base = automap_base()
 
@@ -31,7 +43,7 @@ Base = automap_base()
 Base.prepare(db.engine, reflect=True)
 
 # Save reference to the table
-Mission = Base.classes.wwii_flights
+Missions = Base.classes.wwii_flights
 
 # Route Home Page
 @app.route("/")
@@ -39,35 +51,61 @@ def home():
     """Render Home Page."""
     return render_template("index.html")
 
-@app.route("/WWII_Country_Flying_Missions")
-def WWII_Flight_Cloumns():
+@app.route("/Columns")
+def WWII_Flight_Columns():
     """Return WWII flight Columns"""
 
-    #Using Pandas
-    stmt = db.session.query(Mission).statement
+    # Using Pandas
+    stmt = db.session.query(Missions).statement
     df = pd.read_sql_query(stmt, db.session.bind)
 
     return jsonify(list(df.columns))
 
-@app.route("/WWII_Country_Flying_Dates")
-def WWII_Flight_Dates():
-    """Return WWII flight dates"""
+@app.route("/Data")
+def WWII_Flight_Missions():
+    """Return WWII flight data"""
 
-    # Query for the WWII Country Flying Mission Dates
-    results = wwii_flights.session.query(wwii_flights.LONGITUDE, 
-                                         wwii_flights.LATITUDE, 
-                                         wwii_flights.MSNDATE, 
-                                         wwii_flights.AIRCRAFT_NAME, 
-                                         wwii_flights.COUNTRY_FLYING_MISSION).order_by(wwii_flights.MSNDATE.asc())
+    # Query for the WWII Country Flying Mission
+    # sel = [
+    #     Missions.LONGITUDE,
+    #     Missions.LATITUDE,
+    #     Missions.MSNDATE,
+    #     Missions.YEAR,
+    #     Missions.AIRCRAFT_NAME,
+    #     Missions.COUNTRY_FLYING_MISSION,
+    #     Missions.TGT_COUNTRY
+    # ]
+    # results = db.session.query(*sel).all()
+
+    results = db.session.query(Missions.LONGITUDE, Missions.LATITUDE, Missions.MSNDATE, Missions.AIRCRAFT_NAME, Missions.COUNTRY_FLYING_MISSION).\
+        order_by(Missions.MSNDATE.asc())
+    # print(results)
+
+
+    master_list = []
+    for result in results:
+        Mission_Data = {}
+        Mission_Data["LONGITUDE"] = result
+        Mission_Data["LATITUDE"] = result
+        Mission_Data["MSNDATE"] = result
+        # Mission_Data["YEAR"] = result
+        Mission_Data["AIRCRAFT NAME"] = result
+        Mission_Data["COUNTRY_FLYING_MISSION"] = result
+        # Mission_Data["TGT_COUNTRY"] = result
+        master_list.append(Mission_Data)
+
+    # print(Mission_Data)
+    return jsonify(master_list)
+
+
 
     # Format the data for Plotly/take help on this
     # trace = {
-    #     "x": df["Longitude"].values.tolist(),
-    #     "y": df["Latitude"].values.tolist(),
-    #     "type": "decide on a type with group"
+    #     "x": df["AIRCRAFT NAME"].values.tolist(),
+    #     "y": df["YEAR"].values.tolist(),
+    #     "type": "bar"
     # }
-    return jsonify(list.df.
-
+    # return jsonify(list.df.values)
 
 if __name__ == '__main__':
     app.run(debug=True)

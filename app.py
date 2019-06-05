@@ -77,21 +77,27 @@ def WWII_Flight_Missions():
     # ]
     # results = db.session.query(*sel).all()
 
-    results = db.session.query(Missions.LONGITUDE, Missions.LATITUDE, Missions.MSNDATE, Missions.AIRCRAFT_NAME, Missions.COUNTRY_FLYING_MISSION).\
-        order_by(Missions.MSNDATE.asc())
+    results = db.session.query(Missions.LONGITUDE, 
+                                Missions.LATITUDE, 
+                                Missions.MSNDATE, 
+                                Missions.YEAR, 
+                                Missions.AIRCRAFT_NAME,
+                                Missions.TGT_COUNTRY,
+                                Missions.COUNTRY_FLYING_MISSION).order_by(Missions.MSNDATE.asc())
     # print(results)
 
 
     master_list = []
     for result in results:
         Mission_Data = {}
-        Mission_Data["LONGITUDE"] = result
-        Mission_Data["LATITUDE"] = result
-        Mission_Data["MSNDATE"] = result
-        # Mission_Data["YEAR"] = result
-        Mission_Data["AIRCRAFT NAME"] = result
-        Mission_Data["COUNTRY_FLYING_MISSION"] = result
-        # Mission_Data["TGT_COUNTRY"] = result
+        Mission_Data["LONGITUDE"] = result.LONGITUDE
+        Mission_Data["LATITUDE"] = result.LATITUDE
+        Mission_Data["MSNDATE"] = result.MSNDATE
+        Mission_Data["Year:"] = result.YEAR
+        Mission_Data["AIRCRAFT NAME"] = result.AIRCRAFT_NAME
+        # Mission_Data["AIRCRAFT TYPE"] = result.AIRCRAFT_TYPE
+        Mission_Data["COUNTRY_FLYING_MISSION"] = result.COUNTRY_FLYING_MISSION
+        Mission_Data["TGT_COUNTRY"] = result.TGT_COUNTRY
         master_list.append(Mission_Data)
 
     # print(Mission_Data)

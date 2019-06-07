@@ -1,14 +1,10 @@
 # Import Dependencies
 
 import pandas as pd
-
 import csv
 import json
-# from cStringIO import StringIO
 from flask import Flask, render_template, request, jsonify
-
 import numpy as np
-
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
@@ -23,17 +19,6 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///wwii_flights"
 
 db = SQLAlchemy(app)
-
-# Create our database model
-# class Missions(db.Model):
-#     __tablename__ = 'Flights'
-
-#     id = db.Column(db.Integer, primary_key=True)
-#     LONGITUDE = db.Column(db.String)
-#     LATITUDE = db.Column(db.String)
-#     MSNDATE = db.Column(db.String)
-#     YEAR = db.Column(db.Integer)
-#     AIRCRAFT_NAME = db.Column(db.String)
 
 
 #Reflect an existing database into a new model
@@ -65,19 +50,8 @@ def WWII_Flight_Columns():
 def WWII_Flight_Missions():
     """Return WWII flight data"""
 
-    # Query for the WWII Country Flying Mission
-    # sel = [
-    #     Missions.LONGITUDE,
-    #     Missions.LATITUDE,
-    #     Missions.MSNDATE,
-    #     Missions.YEAR,
-    #     Missions.AIRCRAFT_NAME,
-    #     Missions.COUNTRY_FLYING_MISSION,
-    #     Missions.TGT_COUNTRY
-    # ]
-    # results = db.session.query(*sel).all()
-
-    results = db.session.query(Missions.LONGITUDE, 
+    results = db.session.query(Missions.MISSION_ID,
+                                Missions.LONGITUDE, 
                                 Missions.LATITUDE, 
                                 Missions.MSNDATE, 
                                 Missions.YEAR, 
@@ -90,11 +64,12 @@ def WWII_Flight_Missions():
     master_list = []
     for result in results:
         Mission_Data = {}
+        Mission_Data["MISSION_ID"] = result.MISSION_ID
         Mission_Data["LONGITUDE"] = result.LONGITUDE
         Mission_Data["LATITUDE"] = result.LATITUDE
         Mission_Data["MSNDATE"] = result.MSNDATE
-        Mission_Data["Year:"] = result.YEAR
-        Mission_Data["AIRCRAFT NAME"] = result.AIRCRAFT_NAME
+        Mission_Data["YEAR:"] = result.YEAR
+        Mission_Data["AIRCRAFT_NAME"] = result.AIRCRAFT_NAME
         # Mission_Data["AIRCRAFT TYPE"] = result.AIRCRAFT_TYPE
         Mission_Data["COUNTRY_FLYING_MISSION"] = result.COUNTRY_FLYING_MISSION
         Mission_Data["TGT_COUNTRY"] = result.TGT_COUNTRY
@@ -104,16 +79,5 @@ def WWII_Flight_Missions():
     return jsonify(master_list)
 
 
-
-    # Format the data for Plotly/take help on this
-    # trace = {
-    #     "x": df["AIRCRAFT NAME"].values.tolist(),
-    #     "y": df["YEAR"].values.tolist(),
-    #     "type": "bar"
-    # }
-    # return jsonify(list.df.values)
-
 if __name__ == '__main__':
     app.run(debug=True)
-
-

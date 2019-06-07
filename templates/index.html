@@ -6,19 +6,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>WWII Flight Missions</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="styles.css">
+    <!-- Leaflet CSS -->
+  <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.css" /> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.min.js"></script>
+ <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+  integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+  crossorigin=""/>
 </head>
 
 <body>
- <div class = "header" id = "header_img"></div>
+  <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+  integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+  crossorigin=""></script>
+ <div class = "header" id = "header_img"  background-image="{{ url_for('static', filename='images/b17.jpg') }}"></div>
   <section class = "screen">
    <div class = "content">
     <h1>WWII Flight Missions</h1>
-     <p>Some text here.</p>
+     <p>Military aviation during WWII saw major technological advancements and redefined how war was fought from the sky. The Department of Defense released Theater History of Operations for historic aerial bombings from WWI through Vietnam. This analysis looks at WWII flight data. </p>
+     <p>The dataset includes an abundance of information including allied countries that carried out the airstrikes, the countries and territorries that were targeted, the aircraft used, and the ordinance used in the strikes.</p>
+     <p>Below is an interactive map of the number of missions that targeted each country. In total there were 178,281 missions flown during the war. The United States flew 53% of those missions, followed by Great Britian, New Zealand, then Australia. More than 61,000 missions targeted Germany, specifically Berlin, followed by Italy, France, then Burma, which is now Myanmar. The B17 Bomber flew the majority of the misions (24%). Followed by the B24, B25, A20, then B26.</p>
    </div>
   </section>
- <div class = "globe svg-globe">
+ <!-- <div class = "globe svg-globe">
   <div id = "globe-container">
   </div>
  </div>
@@ -26,29 +39,30 @@
   <div class="content">
    <p>Some more text.</p>
   </div>
- </section>
+ </section> -->
  <div class="map svg-map">
-  <div id="map-container">
+  <div id="map">
+      <iframe width="100%" height="520" frameborder="0" src="https://nbcuniversal.carto.com/u/nbc-sandiego/builder/6fbfc077-b741-4fdb-9ae6-7cc2cde1cd67/embed" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
   </div>
  </div>
  <section class="screen">
   <div class="content">
-   <p>Some more text.</p>
+   <p>Below is another representation of the types of aircrafts that were used. 71 different types of aircraft were used during the war. As mentioned before the B17 bomber was the most used aircraft during WWII for aireal strikes.</p>
   </div>
  </section>
- <div class="plot1"></div>
+ <div id="plot1"></div>
   <section class="screen">
    <div class="content">
-   <p>Some more text.</p>
+   <p>The chart below is another representation of the number of times each axis country was targetd. As previously mentioned you can see Germany was the main target for the Allied powers. One interesting find in the data as someone who isn't a WWII historian was there were airstikes carried out on American soil in the Aluetian Islands campaign, which is a territory in Alaska and was part of the Pacific campaign.</p>
    </div>
   </section>
- <div class="plot2"></div>
+ <div id="plot2"></div>
   <section class="screen">
    <div class="content">
-   <p>Some more text.</p>
+   <p></p>
    </div>
   </section>
- <div class="plot3"></div>
+ <!-- <div id="plot3"></div>
   <section class="screen">
    <div class="content">
    <p>Some more text.</p>
@@ -59,6 +73,12 @@
    <div class="content">
    <p>Some more text.</p>
    </div>
-  </section>
+  </section> -->
+
+  <!-- Leaflet JavaScript -->
+  <!-- <script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script> -->
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <!-- API Key -->
+  <script src="{{ url_for('static', filename='js/config.js') }}"></script>
 </body>
 </html>
